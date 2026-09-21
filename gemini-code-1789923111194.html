@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNLOAD - your safe space to let it out | SMKN 15 SAMARINDA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#070913',
+                        cardBg: '#111526',
+                        cardBorder: '#1F2640',
+                        brandPurple: '#8B5CF6',
+                        brandViolet: '#A855F7',
+                        brandPink: '#EC4899',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070913;
+            color: #F3F4F6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(139, 92, 246, 0.12) 0px, transparent 40%),
+                radial-gradient(at 85% 60%, rgba(168, 85, 247, 0.08) 0px, transparent 40%);
+        }
+        .glass-card {
+            background: rgba(17, 21, 38, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.25);
+        }
+        .glow-purple {
+            box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.3);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #070913; }
+        ::-webkit-scrollbar-thumb { background: #1F2640; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#070913]/90 border-b border-white/5 px-4 lg:px-8 py-3.5">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25">
+                    <i class="fa-solid fa-comment-dots text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-300 to-white">
+                        UNLOAD
+                    </h1>
+                    <p class="text-[10px] text-gray-400 -mt-1 font-medium">your safe space to let it out.</p>
+                </div>
+            </div>
+
+            <!-- Nav Links (Center) -->
+            <nav class="hidden md:flex items-center space-x-1 bg-gray-900/60 p-1 rounded-2xl border border-white/5 text-xs font-semibold">
+                <a href="#beranda" class="px-4 py-1.5 rounded-xl text-white bg-purple-600/30 border border-purple-500/40">
+                    <i class="fa-solid fa-house mr-1.5 text-purple-400"></i> Beranda
+                </a>
+                <button onclick="openInfoModal('tentang')" class="px-4 py-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                    <i class="fa-solid fa-circle-info mr-1.5"></i> Tentang
+                </button>
+                <button onclick="openInfoModal('privasi')" class="px-4 py-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                    <i class="fa-solid fa-shield-halved mr-1.5"></i> Privasi
+                </button>
+            </nav>
+
+            <!-- Action Pill Buttons (Right) -->
+            <div class="flex items-center space-x-2">
+                <!-- Check Chat Button -->
+                <button onclick="openModal('modalTokenLookup')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-900 hover:bg-gray-800 text-purple-300 border border-purple-500/30 transition-all flex items-center space-x-1.5 shadow-sm">
+                    <i class="fa-solid fa-comments text-pink-400"></i>
+                    <span class="hidden sm:inline">Cek Chat/Riwayatku</span>
+                </button>
+
+                <!-- Dashboard Panitia Button -->
+                <button onclick="handleDashboardNavClick()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-700 transition-all flex items-center space-x-1.5">
+                    <i class="fa-solid fa-user-shield text-indigo-400"></i>
+                    <span class="hidden sm:inline" id="panitiaBtnLabel">Dashboard Panitia</span>
+                </button>
+
+                <!-- Curhat Primary Button -->
+                <button onclick="openCurhatModal()" class="px-4 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-900/40 border border-purple-400/30 transition-all flex items-center space-x-1.5">
+                    <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                    <span>Curhat</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-6xl w-full mx-auto px-4 py-6 flex-grow space-y-6">
+
+        <!-- 1. HERO BANNER SECTION -->
+        <section id="beranda" class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden glow-purple">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Hero Text Left (7 Cols) -->
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-purple-950/80 text-purple-300 border border-purple-700/50">
+                        <i class="fa-solid fa-sparkles text-amber-400 mr-2"></i> Hai, kamu...
+                    </span>
+
+                    <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                        Nggak harus <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-300 to-white">
+                            kuat terus.
+                        </span><br>
+                        Cerita aja. <span class="text-pink-500">💜</span>
+                    </h2>
+
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed max-w-xl">
+                        UNLOAD adalah ruang curhat anonim yang dikelola oleh <strong>program SAPA</strong>, didampingi oleh <strong>Guru BK SMKN 15 SAMARINDA</strong> dan juga <strong>team program SAPA</strong>. Di sini, kamu bisa bercerita dan mendapatkan balasan dua arah secara aman tanpa takut dihakimi.
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap items-center gap-3">
+                        <button onclick="openCurhatModal()" class="px-6 py-3 rounded-2xl font-extrabold text-xs md:text-sm bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/30 transition-all flex items-center">
+                            <span>Mulai Cerita</span>
+                            <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                        </button>
+
+                        <button onclick="openModal('modalTokenLookup')" class="px-5 py-3 rounded-2xl font-bold text-xs md:text-sm bg-gray-900/80 hover:bg-gray-800 text-purple-200 border border-purple-500/30 transition-all flex items-center">
+                            <i class="fa-solid fa-comments mr-2 text-pink-400"></i>
+                            <span>Cek Balasan Curhatanku</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Illustrative Art Right (5 Cols) -->
+                <div class="lg:col-span-5">
+                    <div class="bg-gradient-to-b from-[#0e1224] to-[#080b17] border border-purple-900/40 rounded-2xl p-6 relative overflow-hidden shadow-2xl min-h-[220px] flex flex-col justify-between">
+                        <!-- Decorative Stars & Moon -->
+                        <div class="flex items-center justify-between text-purple-300 text-xs">
+                            <span><i class="fa-solid fa-stars text-amber-300 mr-1"></i> ✨</span>
+                            <span class="text-amber-200 text-lg"><i class="fa-solid fa-moon"></i></span>
+                        </div>
+
+                        <!-- Floating Pills -->
+                        <div class="space-y-2.5 my-4">
+                            <div class="bg-purple-950/80 border border-purple-700/50 rounded-xl px-3.5 py-2 text-xs text-purple-200 font-semibold w-fit backdrop-blur-md shadow-md animate-bounce" style="animation-duration: 3s;">
+                                Kamu tidak sendiri 💜
+                            </div>
+                            <div class="bg-indigo-950/80 border border-indigo-700/50 rounded-xl px-3.5 py-2 text-xs text-indigo-200 font-semibold w-fit ml-auto backdrop-blur-md shadow-md">
+                                SAPA Selalu Ada untukmu 💜
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Info -->
+                        <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between text-[11px] text-gray-400 font-medium">
+                            <span>🌙 Suasana malam yang tenang untuk bercerita</span>
+                            <span class="text-purple-300 font-bold">SMKN 15 Samarinda</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. MOOD / STATE CHECKER SECTION -->
+        <section class="glass-card rounded-3xl p-6 shadow-xl">
+            <div class="mb-5">
+                <h3 class="text-base font-extrabold text-white flex items-center">
+                    <span class="mr-2">🤗</span> Gimana keadaanmu hari ini?
+                </h3>
+                <p class="text-xs text-gray-400 mt-1">
+                    Kamu nggak harus punya alasan untuk merasa lelah, senang, bingung, atau baik-baik saja. Pilih yang paling menggambarkan perasaanmu sekarang, ya.
+                </p>
+            </div>
+
+            <!-- 7 Mood Cards Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+                
+                <button onclick="openCurhatModalWithMood('Lagi happy')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">😄</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Lagi happy</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('Lumayan baik')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">🟢</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Lumayan baik</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('B aja')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">😐</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">B aja</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('Lagi capek')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">😫</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Lagi capek</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('Lagi nggak baik')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">💔</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Lagi nggak baik</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('Pengen ngilang sebentar')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">🌌</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Pengen ngilang sebentar</span>
+                </button>
+
+                <button onclick="openCurhatModalWithMood('Aku cuma mau cerita')" class="p-3.5 rounded-2xl bg-gray-900/80 hover:bg-purple-950/50 border border-gray-800 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center group col-span-2 sm:col-span-1">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">💬</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-purple-300">Aku cuma mau cerita</span>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- 3. MIDDLE BANNER CARD -->
+        <section class="bg-gradient-to-r from-purple-950/80 via-indigo-950/60 to-gray-900 border border-purple-800/40 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-1 max-w-xl">
+                <h3 class="text-lg font-black text-white flex items-center">
+                    <span class="mr-2">💜</span> Kamu nggak sendirian.
+                </h3>
+                <p class="text-xs text-gray-300 leading-relaxed">
+                    Di UNLOAD, setiap cerita kamu penting. Kami siap mendengarkan, memberikan dukungan dua arah, dan menemani kamu melewati hari-hari yang berat.
+                </p>
+            </div>
+
+            <!-- Right Info Badge Box -->
+            <div class="bg-gray-950/80 border border-purple-500/30 p-4 rounded-2xl shrink-0 flex items-center space-x-3 w-full md:w-auto">
+                <div class="w-10 h-10 rounded-xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 text-base shrink-0">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold text-white">Dikelola oleh program SAPA</h5>
+                    <p class="text-[10px] text-gray-400">Didampingi oleh Guru BK SMKN 15 SAMARINDA<br>dan team program SAPA</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. THREE VALUE PROPOSITION CARDS -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            
+            <!-- Card 1 -->
+            <div class="glass-card glass-card-hover rounded-3xl p-6 transition-all space-y-3">
+                <div class="w-11 h-11 rounded-2xl bg-purple-950 border border-purple-700/50 flex items-center justify-center text-purple-300 text-lg shadow-md">
+                    <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-white">Curhat Tanpa Identitas</h4>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Kamu bisa bercerita dengan aman tanpa perlu menyebutkan nama, kelas, atau informasi pribadi lainnya. Cukup simpan Token Rahasia kamu untuk melihat balasan.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card glass-card-hover rounded-3xl p-6 transition-all space-y-3">
+                <div class="w-11 h-11 rounded-2xl bg-indigo-950 border border-indigo-700/50 flex items-center justify-center text-indigo-300 text-lg shadow-md">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-white">Respon Chat Dua Arah</h4>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Tim SAPA dan Guru BK SMKN 15 Samarinda akan memberikan tanggapan langsung, dan kamu bisa melanjutkan percakapan secara interaktif.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card glass-card-hover rounded-3xl p-6 transition-all space-y-3">
+                <div class="w-11 h-11 rounded-2xl bg-pink-950 border border-pink-700/50 flex items-center justify-center text-pink-300 text-lg shadow-md">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-white">Privasi Kamu Prioritas</h4>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Kami menjaga kerahasiaan dan keamanan setiap cerita yang kamu bagikan agar kamu merasa tenang dan aman sepenuhnya.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- 5. EMERGENCY ALERT BANNER AT BOTTOM -->
+        <section class="bg-amber-950/30 border border-amber-800/40 rounded-2xl p-4 flex items-start space-x-3 text-amber-200 text-xs">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-base mt-0.5 shrink-0"></i>
+            <p class="leading-relaxed">
+                <strong>Perhatian:</strong> Jika kamu sedang berada dalam bahaya atau merasa ingin menyakiti diri sendiri, UNLOAD bukan pengganti bantuan darurat. Segera hubungi orang dewasa yang kamu percaya atau layanan darurat setempat.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/5 bg-[#04060d] py-6 px-4 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-extrabold text-gray-300">UNLOAD</span>
+                <span>•</span>
+                <span>SAPA SMKN 15 SAMARINDA</span>
+            </div>
+
+            <p class="text-[11px] text-gray-500 text-center">
+                &copy; 2026 Program SAPA. Dibuat dengan 💜 untuk kesetaraan dan kesehatan mental siswa.
+            </p>
+
+            <div class="flex items-center space-x-4 text-gray-400">
+                <a href="#beranda" class="hover:text-purple-400 transition-colors">Beranda</a>
+                <button onclick="openInfoModal('tentang')" class="hover:text-purple-400 transition-colors">Tentang</button>
+                <button onclick="openInfoModal('privasi')" class="hover:text-purple-400 transition-colors">Privasi</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== MODALS & DRAWERS ==================== -->
+
+    <!-- MODAL 1: FORM CURHAT BARU -->
+    <div id="modalCurhat" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card border border-purple-900/60 rounded-3xl w-full max-w-lg p-6 shadow-2xl relative">
+            <button onclick="closeModal('modalCurhat')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <div class="flex items-center space-x-3 mb-5">
+                <div class="w-10 h-10 rounded-2xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300">
+                    <i class="fa-solid fa-pen-to-square text-base"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white">Tulis Curhatan Anonim</h3>
+                    <p class="text-xs text-gray-400">Ceritamu tidak mencantumkan nama atau identitas apapun.</p>
+                </div>
+            </div>
+
+            <form onsubmit="handleNewCurhatSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Perasaan / Mood Saat Ini</label>
+                    <select id="curhatMoodSelect" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                        <option value="Aku cuma mau cerita">💬 Aku cuma mau cerita</option>
+                        <option value="Lainnya">😄 Lagi happy</option>
+                        <option value="Lumayan baik">🟢 Lumayan baik</option>
+                        <option value="B aja">😐 B aja</option>
+                        <option value="Lagi capek">😫 Lagi capek</option>
+                        <option value="Lagi nggak baik">💔 Lagi nggak baik</option>
+                        <option value="Pengen ngilang sebentar">🌌 Pengen ngilang sebentar</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Ditujukan Kepada</label>
+                    <select id="curhatTargetSelect" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                        <option value="Team SAPA & Guru BK">Team SAPA & Guru BK (Rekomendasi)</option>
+                        <option value="Guru BK SMKN 15">Khusus Guru BK SMKN 15 Samarinda</option>
+                        <option value="Team SAPA">Khusus Tim Program SAPA</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1 flex items-center justify-between">
+                        <span>Isi Ceritamu</span>
+                        <span id="modalCharCounter" class="text-[10px] text-gray-500 font-normal">0/1000</span>
+                    </label>
+                    <textarea id="curhatTextarea" maxlength="1000" required oninput="updateModalCharCount()" rows="5" 
+                        placeholder="Tumpahkan seluruh rasa lelah atau keluh kesahmu di sini..." 
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-all resize-none leading-relaxed"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-extrabold py-3 rounded-xl text-xs transition-all shadow-lg shadow-purple-900/40">
+                    Kirim Curhatan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: SUCCESS SUBMIT TOKEN DISPLAY -->
+    <div id="modalSuccessToken" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card border border-purple-500/50 rounded-3xl w-full max-w-md p-6 text-center space-y-4 shadow-2xl relative">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-950 border border-emerald-700/50 flex items-center justify-center text-emerald-400 text-2xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+                <h3 class="text-base font-black text-white">Curhatan Berhasil Terkirim!</h3>
+                <p class="text-xs text-gray-400 mt-1">Simpan Token Rahasia di bawah ini untuk mengecek balasan dari Panitia/Guru BK kapan saja.</p>
+            </div>
+
+            <div class="bg-gray-950 border border-purple-800/80 rounded-2xl p-3.5 flex items-center justify-between">
+                <span id="displayCreatedToken" class="font-mono text-base font-black text-purple-300">SAPA-XXXX</span>
+                <button onclick="copyCreatedToken()" class="px-3 py-1.5 bg-purple-900 hover:bg-purple-800 text-purple-200 rounded-xl text-xs font-bold transition-all">
+                    <i class="fa-solid fa-copy mr-1"></i> Salin
+                </button>
+            </div>
+
+            <div class="pt-2 flex items-center space-x-2">
+                <button onclick="closeModal('modalSuccessToken')" class="flex-1 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-bold">
+                    Tutup
+                </button>
+                <button onclick="openChatFromSuccessToken()" class="flex-1 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-extrabold shadow-md">
+                    Langsung Buka Chat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: LOOKUP TOKEN (CEK CHAT) -->
+    <div id="modalTokenLookup" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card border border-purple-900/60 rounded-3xl w-full max-w-md p-6 shadow-2xl relative space-y-5">
+            <button onclick="closeModal('modalTokenLookup')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-pink-950 border border-pink-700/50 flex items-center justify-center text-pink-400">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white">Cek Balasan Curhatan</h3>
+                    <p class="text-xs text-gray-400">Masukkan Token Rahasia curhatanmu</p>
+                </div>
+            </div>
+
+            <form onsubmit="handleTokenLookup(event)" class="space-y-3">
+                <div>
+                    <input type="text" id="lookupTokenInput" placeholder="Contoh: SAPA-8392" required class="w-full bg-gray-950 border border-gray-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs text-white uppercase font-mono tracking-wider focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-extrabold py-2.5 rounded-xl text-xs shadow-md">
+                    Buka Percakapan
+                </button>
+            </form>
+
+            <!-- Saved Tokens Quick List -->
+            <div id="savedTokensBox" class="pt-3 border-t border-gray-800/80 hidden">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Riwayat Token Kamu di Perangkat Ini:</label>
+                <div id="savedTokensList" class="space-y-1.5 max-h-36 overflow-y-auto">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: TWO-WAY CHAT WINDOW -->
+    <div id="modalChatWindow" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 hidden">
+        <div class="glass-card border border-gray-800 rounded-3xl w-full max-w-2xl h-[580px] flex flex-col overflow-hidden shadow-2xl relative">
+            
+            <!-- Chat Header -->
+            <div class="bg-gray-950 p-4 border-b border-gray-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button onclick="closeModal('modalChatWindow')" class="text-gray-400 hover:text-white mr-1 sm:hidden"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="w-9 h-9 rounded-xl bg-purple-950 border border-purple-700/50 flex items-center justify-center text-purple-300">
+                        <i class="fa-solid fa-user-shield text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white flex items-center">
+                            <span id="chatHeaderTarget">Team SAPA & Guru BK</span>
+                            <span id="chatHeaderStatusBadge" class="ml-2 text-[9px] px-2 py-0.2 rounded-full bg-purple-900 text-purple-300 font-bold">-</span>
+                        </h4>
+                        <p class="text-[10px] text-gray-400 font-mono">Token: <span id="chatHeaderToken" class="text-purple-300 font-bold">SAPA-XXXX</span></p>
+                    </div>
+                </div>
+
+                <button onclick="closeModal('modalChatWindow')" class="text-gray-400 hover:text-white hidden sm:block"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Chat Messages Scrollable Body -->
+            <div id="chatMessagesContainer" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gradient-to-b from-gray-950/60 to-gray-900/80">
+                <!-- Messages rendered by JS -->
+            </div>
+
+            <!-- Chat Reply Input Footer -->
+            <div class="p-3 bg-gray-950 border-t border-gray-800">
+                <form onsubmit="handleSendChatReply(event)" class="flex items-center space-x-2">
+                    <input type="text" id="chatReplyInput" required placeholder="Tulis balasan pesan di sini..." class="flex-grow bg-gray-900 border border-gray-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md flex items-center">
+                        <i class="fa-solid fa-paper-plane mr-1.5"></i> Kirim
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL 5: PANITIA LOGIN -->
+    <div id="modalPanitiaLogin" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card border border-purple-900/60 rounded-3xl w-full max-w-md p-6 shadow-2xl relative">
+            <button onclick="closeModal('modalPanitiaLogin')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 mx-auto mb-3">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">Login Dashboard Panitia</h3>
+                <p class="text-xs text-gray-400 mt-1">Khusus Tim SAPA & Guru BK SMKN 15 Samarinda</p>
+            </div>
+
+            <form onsubmit="handlePanitiaLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Identitas Peran</label>
+                    <select id="panitiaRoleSelect" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                        <option value="Team SAPA">Team SAPA</option>
+                        <option value="Guru BK SMKN 15">Guru BK SMKN 15 Samarinda</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Password Panitia</label>
+                    <input type="password" id="panitiaPasswordInput" required placeholder="Masukkan password panitia" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <p class="text-[10px] text-gray-500 mt-1">Gunakan password Contoh: <code class="text-purple-400 font-bold">ayam6</code></p>
+                </div>
+
+                <div id="panitiaLoginError" class="hidden text-xs text-red-400 bg-red-950/50 border border-red-800/60 p-2 rounded-xl text-center">
+                    Password salah! Silakan coba lagi.
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-extrabold py-2.5 rounded-xl text-xs transition-all shadow-lg shadow-purple-900/40">
+                    Masuk Portal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 6: PANITIA DASHBOARD DRAWER -->
+    <div id="modalPanitiaDashboard" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 hidden">
+        <div class="glass-card border border-purple-900/60 rounded-3xl w-full max-w-4xl h-[620px] flex flex-col overflow-hidden shadow-2xl relative">
+            
+            <!-- Dashboard Header -->
+            <div class="bg-gray-950 p-4 border-b border-gray-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300">
+                        <i class="fa-solid fa-inbox"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center">
+                            Dashboard Curhatan Siswa
+                            <span id="panitiaActiveBadge" class="ml-2 text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.2 rounded-full font-bold">Aktif</span>
+                        </h3>
+                        <p class="text-[10px] text-gray-400">Tim SAPA & Guru BK SMKN 15 Samarinda</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="logoutPanitia()" class="text-xs bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 px-3 py-1.5 rounded-xl font-bold">
+                        Keluar
+                    </button>
+                    <button onclick="closeModal('modalPanitiaDashboard')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content List -->
+            <div class="p-4 overflow-y-auto flex-grow space-y-3" id="panitiaInboxList">
+                <!-- Rendered by JS -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL 7: INFORMASI TENTANG & PRIVASI -->
+    <div id="modalInfo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card border border-purple-900/60 rounded-3xl w-full max-w-md p-6 shadow-2xl relative space-y-4">
+            <button onclick="closeModal('modalInfo')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <h3 id="infoModalTitle" class="text-base font-bold text-white flex items-center">
+                <i class="fa-solid fa-circle-info text-purple-400 mr-2"></i> Tentang UNLOAD
+            </h3>
+
+            <div id="infoModalBody" class="text-xs text-gray-300 leading-relaxed space-y-2">
+                <!-- Rendered by JS -->
+            </div>
+
+            <button onclick="closeModal('modalInfo')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded-xl text-xs">
+                Mengerti
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ==================== JAVASCRIPT APP LOGIC ==================== -->
+    <script>
+        // INITIAL DEMO DATA
+        const INITIAL_CURHATAN = [
+            {
+                token: 'SAPA-8392',
+                mood: 'Lagi capek',
+                target: 'Team SAPA & Guru BK',
+                createdAt: '2 jam yang lalu',
+                status: 'waiting', // 'waiting' or 'replied'
+                messages: [
+                    { sender: 'user', senderName: 'Siswa (Anonim)', text: 'Aku akhir-akhir ini ngerasa capek banget sama tugas sekolah dan masalah rumah...', timestamp: '10:15' }
+                ]
+            },
+            {
+                token: 'SAPA-4120',
+                mood: 'Pengen ngilang sebentar',
+                target: 'Guru BK SMKN 15',
+                createdAt: '1 hari yang lalu',
+                status: 'replied',
+                messages: [
+                    { sender: 'user', senderName: 'Siswa (Anonim)', text: 'Bu Guru BK, saya bingung menentukan mau lanjut kuliah atau kerja setelah lulus nanti...', timestamp: 'Kemarin' },
+                    { sender: 'panitia', senderName: 'Guru BK SMKN 15', text: 'Halo nak! Pertanyaan yang sangat baik. Kamu bisa datang langsung ke ruang BK kapan saja untuk sesi konsultasi minat gratis ya.', timestamp: 'Kemarin' }
+                ]
+            }
+        ];
+
+        let state = {
+            isPanitiaLoggedIn: false,
+            panitiaRole: 'Team SAPA',
+            createdToken: null,
+            activeChatToken: null,
+            curhatanList: [],
+            userSavedTokens: []
+        };
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            checkPanitiaSession();
+        });
+
+        function loadFromLocalStorage() {
+            const savedCurhatan = localStorage.getItem('unload_sapa_curhatan');
+            if (savedCurhatan) {
+                state.curhatanList = JSON.parse(savedCurhatan);
+            } else {
+                state.curhatanList = INITIAL_CURHATAN;
+                saveCurhatanToStorage();
+            }
+
+            const savedTokens = localStorage.getItem('unload_user_tokens');
+            if (savedTokens) {
+                state.userSavedTokens = JSON.parse(savedTokens);
+            }
+        }
+
+        function saveCurhatanToStorage() {
+            localStorage.setItem('unload_sapa_curhatan', JSON.stringify(state.curhatanList));
+        }
+
+        function saveUserTokensToStorage() {
+            localStorage.setItem('unload_user_tokens', JSON.stringify(state.userSavedTokens));
+        }
+
+        // MODAL HELPERS
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function openCurhatModal() {
+            document.getElementById('curhatTextarea').value = '';
+            document.getElementById('modalCharCounter').textContent = '0/1000';
+            openModal('modalCurhat');
+        }
+
+        function openCurhatModalWithMood(moodName) {
+            openCurhatModal();
+            document.getElementById('curhatMoodSelect').value = moodName;
+        }
+
+        function updateModalCharCount() {
+            const val = document.getElementById('curhatTextarea').value;
+            document.getElementById('modalCharCounter').textContent = `${val.length}/1000`;
+        }
+
+        // SUBMIT NEW CURHAT
+        function handleNewCurhatSubmit(e) {
+            e.preventDefault();
+            const mood = document.getElementById('curhatMoodSelect').value;
+            const target = document.getElementById('curhatTargetSelect').value;
+            const text = document.getElementById('curhatTextarea').value.trim();
+
+            if (!text) return;
+
+            const generatedToken = 'SAPA-' + Math.floor(1000 + Math.random() * 9000);
+            const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const newItem = {
+                token: generatedToken,
+                mood: mood,
+                target: target,
+                createdAt: 'Baru saja',
+                status: 'waiting',
+                messages: [
+                    {
+                        sender: 'user',
+                        senderName: 'Siswa (Anonim)',
+                        text: text,
+                        timestamp: now
+                    }
+                ]
+            };
+
+            state.curhatanList.unshift(newItem);
+            saveCurhatanToStorage();
+
+            // Save token to local device history
+            if (!state.userSavedTokens.includes(generatedToken)) {
+                state.userSavedTokens.unshift(generatedToken);
+                saveUserTokensToStorage();
+            }
+
+            state.createdToken = generatedToken;
+            document.getElementById('displayCreatedToken').textContent = generatedToken;
+
+            closeModal('modalCurhat');
+            openModal('modalSuccessToken');
+        }
+
+        function copyCreatedToken() {
+            if (state.createdToken) {
+                navigator.clipboard.writeText(state.createdToken);
+                alert(`Token Rahasia ${state.createdToken} berhasil disalin!`);
+            }
+        }
+
+        function openChatFromSuccessToken() {
+            closeModal('modalSuccessToken');
+            if (state.createdToken) {
+                openChatWindow(state.createdToken);
+            }
+        }
+
+        // TOKEN LOOKUP (CEK CHAT)
+        function handleTokenLookup(e) {
+            e.preventDefault();
+            const tokenInput = document.getElementById('lookupTokenInput').value.trim().toUpperCase();
+            if (!tokenInput) return;
+
+            openChatWindow(tokenInput);
+        }
+
+        function renderSavedTokensList() {
+            const container = document.getElementById('savedTokensList');
+            const box = document.getElementById('savedTokensBox');
+
+            if (state.userSavedTokens.length === 0) {
+                box.classList.add('hidden');
+                return;
+            }
+
+            box.classList.remove('hidden');
+            container.innerHTML = state.userSavedTokens.map(token => {
+                return `
+                    <div onclick="openChatWindow('${token}')" class="p-2 rounded-xl bg-gray-900 hover:bg-gray-800 border border-gray-800 cursor-pointer flex items-center justify-between text-xs transition-all">
+                        <span class="font-mono font-bold text-purple-300">${token}</span>
+                        <span class="text-[10px] text-gray-500">Buka <i class="fa-solid fa-chevron-right ml-1"></i></span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // CHAT WINDOW LOGIC
+        function openChatWindow(token) {
+            const item = state.curhatanList.find(c => c.token === token);
+            if (!item) {
+                alert('Token Rahasia tidak ditemukan! Silakan periksa kembali token kamu.');
+                return;
+            }
+
+            state.activeChatToken = token;
+            document.getElementById('chatHeaderToken').textContent = token;
+            document.getElementById('chatHeaderTarget').textContent = item.target;
+
+            const badge = document.getElementById('chatHeaderStatusBadge');
+            if (item.status === 'waiting') {
+                badge.className = "ml-2 text-[9px] px-2 py-0.2 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-bold";
+                badge.textContent = "Menunggu Balasan Panitia";
+            } else {
+                badge.className = "ml-2 text-[9px] px-2 py-0.2 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold";
+                badge.textContent = "Sudah Dibalas Panitia";
+            }
+
+            renderChatMessages();
+            closeModal('modalTokenLookup');
+            openModal('modalChatWindow');
+        }
+
+        function renderChatMessages() {
+            const item = state.curhatanList.find(c => c.token === state.activeChatToken);
+            if (!item) return;
+
+            const container = document.getElementById('chatMessagesContainer');
+            container.innerHTML = item.messages.map(m => {
+                const isMe = state.isPanitiaLoggedIn ? (m.sender === 'panitia') : (m.sender === 'user');
+
+                return `
+                    <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
+                        <div class="flex items-center space-x-1.5 mb-1 px-1">
+                            <span class="text-[10px] font-bold text-gray-400">${m.senderName}</span>
+                            <span class="text-[9px] text-gray-600">${m.timestamp}</span>
+                        </div>
+                        <div class="max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${
+                            isMe 
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none shadow-md' 
+                            : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-none'
+                        }">
+                            ${m.text}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleSendChatReply(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatReplyInput');
+            const text = input.value.trim();
+            if (!text || !state.activeChatToken) return;
+
+            const item = state.curhatanList.find(c => c.token === state.activeChatToken);
+            if (item) {
+                const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                item.messages.push({
+                    sender: state.isPanitiaLoggedIn ? 'panitia' : 'user',
+                    senderName: state.isPanitiaLoggedIn ? state.panitiaRole : 'Siswa (Anonim)',
+                    text: text,
+                    timestamp: now
+                });
+
+                if (state.isPanitiaLoggedIn) {
+                    item.status = 'replied';
+                } else {
+                    item.status = 'waiting';
+                }
+
+                saveCurhatanToStorage();
+                input.value = '';
+                renderChatMessages();
+                if (state.isPanitiaLoggedIn) renderPanitiaDashboardInbox();
+            }
+        }
+
+        // PANITIA LOGIN & DASHBOARD
+        function handleDashboardNavClick() {
+            if (state.isPanitiaLoggedIn) {
+                renderPanitiaDashboardInbox();
+                openModal('modalPanitiaDashboard');
+            } else {
+                openModal('modalPanitiaLogin');
+            }
+        }
+
+        function handlePanitiaLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('panitiaPasswordInput').value;
+            const role = document.getElementById('panitiaRoleSelect').value;
+
+            if (pass === 'sapa26') {
+                state.isPanitiaLoggedIn = true;
+                state.panitiaRole = role;
+                localStorage.setItem('unload_panitia_session', JSON.stringify({ loggedIn: true, role: role }));
+
+                document.getElementById('panitiaPasswordInput').value = '';
+                document.getElementById('panitiaLoginError').classList.add('hidden');
+
+                closeModal('modalPanitiaLogin');
+                updatePanitiaUI();
+                renderPanitiaDashboardInbox();
+                openModal('modalPanitiaDashboard');
+            } else {
+                document.getElementById('panitiaLoginError').classList.remove('hidden');
+            }
+        }
+
+        function checkPanitiaSession() {
+            const saved = localStorage.getItem('unload_panitia_session');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.isPanitiaLoggedIn = parsed.loggedIn;
+                state.panitiaRole = parsed.role;
+                updatePanitiaUI();
+            }
+        }
+
+        function updatePanitiaUI() {
+            const label = document.getElementById('panitiaBtnLabel');
+            if (state.isPanitiaLoggedIn) {
+                label.textContent = `Portal (${state.panitiaRole})`;
+            } else {
+                label.textContent = "Dashboard Panitia";
+            }
+        }
+
+        function logoutPanitia() {
+            state.isPanitiaLoggedIn = false;
+            state.panitiaRole = 'Team SAPA';
+            localStorage.removeItem('unload_panitia_session');
+            updatePanitiaUI();
+            closeModal('modalPanitiaDashboard');
+        }
+
+        function renderPanitiaDashboardInbox() {
+            const container = document.getElementById('panitiaInboxList');
+
+            if (state.curhatanList.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-8">Belum ada curhatan masuk.</p>`;
+                return;
+            }
+
+            container.innerHTML = state.curhatanList.map(item => {
+                const lastMsg = item.messages.length > 0 ? item.messages[item.messages.length - 1].text : '';
+                const isWaiting = item.status === 'waiting';
+
+                return `
+                    <div onclick="openChatFromPanitia('${item.token}')" class="p-3.5 rounded-2xl bg-gray-900 hover:bg-gray-800 border border-gray-800 cursor-pointer transition-all flex items-center justify-between">
+                        <div class="space-y-1 overflow-hidden pr-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-mono text-xs font-bold text-purple-300">${item.token}</span>
+                                <span class="text-[10px] bg-purple-950 text-purple-200 border border-purple-800 px-2 py-0.2 rounded-md font-semibold">${item.mood}</span>
+                                <span class="text-[10px] text-gray-400">• ${item.createdAt}</span>
+                            </div>
+                            <p class="text-xs text-gray-300 truncate">${lastMsg}</p>
+                        </div>
+
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 ${
+                            isWaiting 
+                            ? 'bg-amber-950 text-amber-300 border border-amber-800' 
+                            : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                        }">
+                            ${isWaiting ? 'Perlu Balasan' : 'Sudah Dibalas'}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openChatFromPanitia(token) {
+            closeModal('modalPanitiaDashboard');
+            openChatWindow(token);
+        }
+
+        // INFO MODAL
+        function openInfoModal(type) {
+            const title = document.getElementById('infoModalTitle');
+            const body = document.getElementById('infoModalBody');
+
+            if (type === 'tentang') {
+                title.innerHTML = `<i class="fa-solid fa-circle-info text-purple-400 mr-2"></i> Tentang UNLOAD`;
+                body.innerHTML = `
+                    <p><strong>UNLOAD</strong> adalah platform ruang curhat anonim resmi yang dikembangkan khusus untuk siswa/i <strong>SMK NEGERI 15 SAMARINDA</strong>.</p>
+                    <p>Dikelola secara aktif oleh <strong>Program SAPA</strong> dan didampingi langsung oleh <strong>Guru Bimbingan Konseling (BK) SMKN 15 Samarinda</strong>.</p>
+                    <p>Tujuan utama platform ini adalah memberikan ruang aman bagi siswa untuk membagikan keluh kesah tanpa risau akan identitas terungkap.</p>
+                `;
+            } else {
+                title.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Keamanan & Privasi`;
+                body.innerHTML = `
+                    <p><strong>100% Anonim & Rahasia:</strong> Sistem UNLOAD tidak merekam nama, NISN, atau IP address siswa saat mengirimkan cerita.</p>
+                    <p><strong>Sistem Token Rahasia:</strong> Kamu menggunakan kode Token unik (contoh: <code>SAPA-1234</code>) untuk mengakses balasan dari panitia secara pribadi.</p>
+                    <p>Jangan membagikan Token Rahasia kamu kepada orang lain agar isi percakapan tetap terjaga secara penuh.</p>
+                `;
+            }
+
+            openModal('modalInfo');
+        }
+    </script>
+</body>
+</html>
